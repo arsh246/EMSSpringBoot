@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee Management System</title>
+
+    <!-- ✅ Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .top-btn {
+            width: 200px;
+            margin: 10px;
+        }
+
+        .table-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 8px lightgray;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ✅ NAVBAR -->
+<nav class="navbar navbar-dark bg-success px-3">
+    <a class="navbar-brand fw-bold text-white" href="#">☰ EMS</a>
+</nav>
+
+
+<!-- ✅ BUTTONS SECTION -->
+<div class="text-center mt-4">
+
+    <!-- Add -->
+    <button class="btn btn-success top-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#addModal">
+        ➕ Add Employee
+    </button>
+
+    <!-- Update -->
+    <button class="btn btn-success top-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#updateModal">
+        ✏️ Update Employee
+    </button>
+
+    <!-- Delete -->
+    <button class="btn btn-success top-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteModal">
+        🗑 Delete Employee
+    </button>
+
+    <!-- Delete All -->
+    <button class="btn btn-success top-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteAllModal">
+        ⚠️ Delete All
+    </button>
+
+</div>
+
+
+<!-- ✅ EMPLOYEE TABLE -->
+<div class="container table-container">
+
+    <h3 class="text-center fw-bold mb-4">
+        Employee Management System
+    </h3>
+
+    <table class="table table-bordered table-striped text-center">
+        <thead class="table-success">
+        <tr>
+            <th>Sl.No</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Gender</th>
+            <th>Salary</th>
+            <th>Role</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="emp, stat : ${employees}">
+            <td th:text="${stat.count}"></td>
+            <td th:text="${emp.id}"></td>
+            <td th:text="${emp.employeeName}"></td>
+            <td th:text="${emp.employeeEmail}"></td>
+            <td th:text="${emp.employeePhone}"></td>
+            <td th:text="${emp.employeeGender}"></td>
+            <td th:text="${emp.employeeSalary}"></td>
+            <td th:text="${emp.employeeRole}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- ✅ MODALS SECTION -->
+<!-- ================================================= -->
+
+
+<!-- ✅ ADD MODAL -->
+<div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+
+            <h4 class="text-center text-success fw-bold">Add Employee</h4>
+
+            <form th:action="@{/create}" th:object="${employee}" method="post">
+
+                <input th:field="*{employeeName}" class="form-control mt-2"
+                       placeholder="Employee Name" required>
+
+                <input th:field="*{employeeEmail}" class="form-control mt-2"
+                       placeholder="Employee Email" required>
+
+                <input th:field="*{employeePhone}" class="form-control mt-2"
+                       placeholder="Phone Number" required>
+
+                <label>
+                    <select th:field="*{employeeGender}" class="form-select mt-2" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </label>
+
+                <input th:field="*{employeeSalary}" class="form-control mt-2"
+                       placeholder="Salary" required>
+
+                <select th:field="*{employeeRole}" class="form-select mt-2" required>
+                    <option value="">Select Role</option>
+                    <option value="Java Developer">Java Developer</option>
+                    <option value="Python Developer">Python Developer</option>
+                    <option value="Web Developer">Web Developer</option>
+                    <option value="UI Developer">UI Developer</option>
+                </select>
+
+                <button type="submit" class="btn btn-success w-100 mt-3">
+                    Add Employee
+                </button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- ✅ UPDATE MODAL -->
+<div class="modal fade" id="updateModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+
+            <h4 class="text-center text-primary fw-bold">Update Employee</h4>
+
+            <form th:action="@{/update}" th:object="${employee}" method="post">
+
+                <input th:field="*{id}" class="form-control mt-2"
+                       placeholder="Employee ID" required>
+
+                <input th:field="*{employeeName}" class="form-control mt-2"
+                       placeholder="Employee Name">
+
+                <input th:field="*{employeeEmail}" class="form-control mt-2"
+                       placeholder="Employee Email">
+
+                <input th:field="*{employeePhone}" class="form-control mt-2"
+                       placeholder="Phone Number">
+
+                <input th:field="*{employeeGender}" class="form-control mt-2"
+                       placeholder="Employee Gender">
+
+                <input th:field="*{employeeSalary}" class="form-control mt-2"
+                       placeholder="Salary">
+
+                <input th:field="*{employeeRole}" class="form-control mt-2"
+                       placeholder="Employee Role">
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">
+                    Update Employee
+                </button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- ✅ DELETE MODAL -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+
+            <h4 class="text-center text-danger fw-bold">Delete Employee</h4>
+
+            <form th:action="@{/remove}" method="post">
+
+                <input name="id" class="form-control mt-2"
+                       placeholder="Employee ID" required>
+
+                <button type="submit" class="btn btn-danger w-100 mt-3">
+                    Delete Employee
+                </button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- ✅ DELETE ALL MODAL -->
+<div class="modal fade" id="deleteAllModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+
+            <h4 class="text-center text-warning fw-bold">
+                Confirm Delete All Employees
+            </h4>
+
+            <p class="text-center">
+                Type <b>Yes</b> to delete all employee records.
+            </p>
+
+            <form th:action="@{/remove/all}"
+                  th:object="${confirmationForm}"
+                  method="post">
+
+                <input th:field="*{confirmation}"
+                       class="form-control mt-2"
+                       placeholder="Type Yes" required>
+
+                <button type="submit" class="btn btn-warning w-100 mt-3">
+                    Delete All Employees
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ✅ Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
